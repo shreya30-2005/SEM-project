@@ -1,0 +1,48 @@
+.favourite-btn {
+  background: none;
+  border: 2px solid rgba(200, 200, 200, 0.4);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: rgba(200, 200, 200, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.favourite-btn:hover {
+  border-color: #ff6b9d;
+  color: #ff6b9d;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+}
+
+.favourite-btn.active {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+  border-color: #ff6b9d;
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+}
+
+.favourite-btn.active:hover {
+  background: linear-gradient(135deg, #c44569 0%, #ff6b9d 100%);
+  transform: scale(1.1);
+}
+
+.favourite-btn.loading {
+  animation: spin 1s linear infinite;
+}
+
+.favourite-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

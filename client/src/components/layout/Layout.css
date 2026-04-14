@@ -1,0 +1,241 @@
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #f3ecff 0%, #eadcff 100%);
+  overflow: hidden;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 280px;
+  background-color: rgba(238, 229, 255, 0.96);
+  /* Matched original glass panel */
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(214, 197, 242, 0.9);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.sidebar-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.sidebar-brand {
+  margin: 0 0 20px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4a2d66;
+  letter-spacing: -0.5px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(202, 182, 221, 0.85);
+  /* matched original item look */
+  border-radius: 12px;
+  border: 1px solid rgba(189, 164, 214, 0.9);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--action);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: white;
+  box-shadow: var(--action-shadow);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #4c3157;
+}
+
+.role {
+  font-size: 0.75rem;
+  color: #8c6174;
+  text-transform: capitalize;
+}
+
+/* Navigation Group */
+.sidebar-nav {
+  padding: 24px 16px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-group-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ff7f8d;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  padding-left: 12px;
+}
+
+.mt-4 {
+  margin-top: 24px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  color: #6b4d68;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.55);
+  color: #4c3157;
+}
+
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.72);
+  color: #3f274d;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: #ff7a88;
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-right: 12px;
+  width: 24px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
+}
+
+.nav-label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.badge {
+  background: #ff7a88;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: auto;
+  box-shadow: 0 0 10px rgba(72, 15, 15, 0.4);
+}
+
+/* Footer & Logout */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--danger-border);
+  color: #5c3b67;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.45);
+  color: #40284d;
+  border-color: rgba(189, 164, 214, 0.9);
+}
+
+.logout-button .nav-icon {
+  margin-right: 12px;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 0;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Shared Page Title Header */
+.page-header {
+  padding: 32px 40px;
+  background: linear-gradient(to bottom, rgba(243, 236, 255, 0.96), rgba(255, 255, 255, 0.88));
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: blur(8px);
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #432228;
+}
+
+.page-subtitle {
+  color: #8e7a7f;
+  margin: 4px 0 0 0;
+  font-size: 0.95rem;
+}
+
+.page-body {
+  padding: 0 40px 40px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* General Layout utilities for pages */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .grid-layout.has-sidebar-cart {
+    grid-template-columns: 3fr 1fr;
+    align-items: start;
+  }
+}
