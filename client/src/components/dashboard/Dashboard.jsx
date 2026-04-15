@@ -79,11 +79,12 @@ const handleDecreaseQty = (index) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           items: cartItems.map(item => ({
-  name: item.name,
-  price: item.price,
-  quantity: item.quantity || 1
-})),
-          total: cartItems.reduce((sum, item) => sum + item.price, 0)
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity || 1
+          })),
+          total: cartItems.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0),
+          user: user.username
         })
       });
       if (res.ok) {

@@ -81,21 +81,6 @@ const Register = ({ onToggle }) => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="role">Account Role</label>
-          <select 
-            id="role" 
-            name="role" 
-            value={formData.role}
-            onChange={handleChange}
-            className="form-select"
-            disabled={loading}
-          >
-            <option value="user">User</option>
-            <option value="admin">Administrator</option>
-          </select>
-        </div>
-
         <button type="submit" className="auth-submit" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
         </button>

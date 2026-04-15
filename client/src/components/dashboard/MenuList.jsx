@@ -8,6 +8,7 @@ const MenuList = ({ items, cartItems = [], isAdmin, username, onAddToCart, onDel
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   console.log('MenuList rendered with username:', username, 'items count:', items.length);
 
@@ -42,7 +43,7 @@ const MenuList = ({ items, cartItems = [], isAdmin, username, onAddToCart, onDel
     const inCart = cartIndex >= 0;
 
     return (
-      <div key={item._id} className="menu-card menu-phone-card">
+      <div key={item._id} className="menu-card menu-phone-card" onClick={() => setSelectedItem(item)}>
         <div className="menu-card-image-shell">
           {getImageSrc(item) ? (
             <img src={getImageSrc(item)} alt={item.name} className="menu-card-image" />
@@ -60,7 +61,7 @@ const MenuList = ({ items, cartItems = [], isAdmin, username, onAddToCart, onDel
           </div>
 
           <div className="menu-card-meta">
-            <DynamicStarRating menuId={item._id} refreshTrigger={refreshTrigger} />
+            <DynamicStarRating menuId={item._id} refreshTrigger={refreshTrigger} key={refreshTrigger} />
             <span className="menu-card-dot">•</span>
             <span>{item.category}</span>
           </div>
@@ -69,7 +70,7 @@ const MenuList = ({ items, cartItems = [], isAdmin, username, onAddToCart, onDel
             <div className="menu-price" style={{ margin: 0 }}>Rs. {item.price}</div>
           </div>
 
-          <div className="card-actions card-actions-phone">
+          <div className="card-actions card-actions-phone" onClick={(e) => e.stopPropagation()}>
             {inCart ? (
               <div className="qty-control qty-control-phone">
                 <button className="qty-btn" onClick={() => onDecreaseQty(cartIndex)}>-</button>
@@ -153,40 +154,34 @@ const MenuList = ({ items, cartItems = [], isAdmin, username, onAddToCart, onDel
       </section>
 
       <aside className="glass-panel menu-shell menu-shell-right">
-        {featuredItem ? (
+        {selectedItem ? (
           <>
             <div className="menu-detail-topbar">
-              <button className="menu-icon-plain" type="button">back</button>
+              <button className="menu-icon-plain" type="button" onClick={() => setSelectedItem(null)}>back</button>
               <button className="menu-icon-plain" type="button">search</button>
             </div>
 
             <div className="menu-detail-image-wrap">
-              {getImageSrc(featuredItem) ? (
-                <img src={getImageSrc(featuredItem)} alt={featuredItem.name} className="menu-detail-image" />
+              {getImageSrc(selectedItem) ? (
+                <img src={getImageSrc(selectedItem)} alt={selectedItem.name} className="menu-detail-image" />
               ) : (
                 <div className="menu-detail-image menu-card-image-fallback">
-                  <span>{(featuredItem.name || 'F').charAt(0).toUpperCase()}</span>
+                  <span>{(selectedItem.name || 'F').charAt(0).toUpperCase()}</span>
                 </div>
               )}
             </div>
 
-            <h3 className="menu-detail-title">{featuredItem.name}</h3>
+            <h3 className="menu-detail-title">{selectedItem.name}</h3>
             <div className="menu-detail-meta">
-              <span>4.8</span>
+              <DynamicStarRating menuId={selectedItem._id} refreshTrigger={refreshTrigger} key={`selected-${refreshTrigger}`} />
               <span className="menu-card-dot">•</span>
-              <span>14 min</span>
+              <span>{selectedItem.category}</span>
             </div>
             <p className="menu-detail-copy">
-              Enjoy our delicious {featuredItem.name}. Freshly prepared and ready to order from your canteen menu.
+              Enjoy our delicious {selectedItem.name}. Freshly prepared and ready to order from your canteen menu.
             </p>
 
             <div className="menu-detail-scale">
-              <div>
-                <span className="menu-detail-scale-label">Spicy</span>
-                <div className="menu-detail-bar">
-                  <span className="menu-detail-bar-fill" />
-                </div>
-              </div>
               <div>
                 <span className="menu-detail-scale-label">Portion</span>
                 <div className="qty-control qty-control-phone">
@@ -198,14 +193,25 @@ const MenuList = ({ items, cartItems = [], isAdmin, username, onAddToCart, onDel
             </div>
 
             <div className="menu-detail-footer">
-              <div className="menu-detail-price">Rs. {featuredItem.price}</div>
-              <button className="btn-success menu-order-btn" onClick={() => onAddToCart(featuredItem)}>
+              <div className="menu-detail-price">Rs. {selectedItem.price}</div>
+              <button className="btn-success menu-order-btn" onClick={() => onAddToCart(selectedItem)}>
                 ORDER NOW
               </button>
             </div>
+
+            {username && (
+              <ReviewForm 
+                itemId={selectedItem._id} 
+                itemName={selectedItem.name}
+                username={username}
+                onReviewAdded={handleReviewAdded}
+              />
+            )}
           </>
         ) : (
-          <p className="menu-empty-state">No featured item available.</p>
+          <div className="menu-empty-state">
+            <p>Click on a food item to view details</p>
+          </div>
         )}
       </aside>
     </div>

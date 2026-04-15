@@ -118,7 +118,11 @@ app.patch("/update-order-status/:id", async (req, res) => {
 app.post("/add-review", async (req, res) => {
   try {
     console.log('Add review request:', req.body);
-    const review = new Review(req.body);
+    const reviewData = {
+      ...req.body,
+      menuId: new mongoose.Types.ObjectId(req.body.menuId)
+    };
+    const review = new Review(reviewData);
     await review.save();
     console.log('Review saved:', review);
     res.json({ message: "Review added", review });
@@ -131,7 +135,8 @@ app.post("/add-review", async (req, res) => {
 // Get reviews for a menu item
 app.get("/reviews/:menuId", async (req, res) => {
   try {
-    const reviews = await Review.find({ menuId: req.params.menuId }).sort({ createdAt: -1 });
+    const menuId = new mongoose.Types.ObjectId(req.params.menuId);
+    const reviews = await Review.find({ menuId }).sort({ createdAt: -1 });
     res.json(reviews);
   } catch (err) {
     res.status(500).send("Error fetching reviews");
@@ -141,14 +146,19 @@ app.get("/reviews/:menuId", async (req, res) => {
 // Get average rating for a menu item
 app.get("/average-rating/:menuId", async (req, res) => {
   try {
-    const reviews = await Review.find({ menuId: req.params.menuId });
+    const menuId = new mongoose.Types.ObjectId(req.params.menuId);
+    const reviews = await Review.find({ menuId });
     if (reviews.length === 0) {
-      return res.json({ averageRating: 0, totalReviews: 0 });
+      // Return default rating if no reviews
+      const menu = await Menu.findById(menuId);
+      const defaultRating = menu && menu.rating ? menu.rating : 4.5;
+      return res.json({ averageRating: defaultRating.toFixed(1), totalReviews: 0 });
     }
     const average = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
     res.json({ averageRating: average.toFixed(1), totalReviews: reviews.length });
   } catch (err) {
-    res.status(500).send("Error calculating average rating");
+    console.error('Error fetching average rating:', err);
+    res.status(500).send("Error fetching average rating");
   }
 });
 
